@@ -5,7 +5,7 @@ RUN ln -snf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
 
 WORKDIR /usr/src/app
 
-COPY ./app .
+COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
 CMD [ "python", "./main.py" ]
