@@ -1,10 +1,7 @@
-FROM python:3-alpine
+FROM python:3
 
-RUN apk --update add tzdata \
-    && cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
-    && apk del tzdata \
-    && rm -rf /var/cache/apk/* \
-    && echo 'Asia/Tokyo' > /etc/timezone
+RUN ln -snf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
+        && echo 'Asia/Tokyo' > /etc/timezone
 
 WORKDIR /usr/src/app
 
