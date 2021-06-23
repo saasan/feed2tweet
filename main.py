@@ -4,6 +4,7 @@ import sys
 import time
 import feedparser
 import tweepy
+import redis
 
 
 # RSSフィードのURL
@@ -16,9 +17,13 @@ TWITTER_API_SECRET_KEY = os.environ['TWITTER_API_SECRET_KEY']
 TWITTER_ACCESS_TOKEN = os.environ['TWITTER_ACCESS_TOKEN']
 # Twitter Access Token Secret
 TWITTER_ACCESS_TOKEN_SECRET = os.environ['TWITTER_ACCESS_TOKEN_SECRET']
+# データを保存するRedisのURL
+REDIS_URL = os.environ['REDIS_URL']
 
-# ツイート済みエントリーの日時を書き込むファイル名
-TWEETED_FILE = 'tweeted.txt'
+# ツイート済みエントリーの日時を書き込むキー名
+REDIS_KEY_TWEETED = 'tweeted'
+# ツイート済みエントリーの日時が保存されていない場合にツイートする最大数
+UNTWEETED_MAX_NUM = 3
 # URLを除いたツイートの最大文字数
 MAX_TWEET_CHAR = 128
 
@@ -32,20 +37,14 @@ def twitter_authentication(api_key, api_secret_key, access_token, access_token_s
     return api
 
 
-def load_tweeted():
+def load_tweeted(db):
     """ツイート済みエントリーの日時を取得"""
-    tweeted = ''
-    if os.path.isfile(TWEETED_FILE):
-        with open(TWEETED_FILE, mode='r') as file:
-            tweeted = file.read()
-
-    return tweeted
+    return db.get(REDIS_KEY_TWEETED)
 
 
-def save_tweeted(updated):
+def save_tweeted(db, updated):
     """ツイート済みエントリーの日時を保存"""
-    with open(TWEETED_FILE, mode='w') as file:
-        file.write(updated)
+    db.set(REDIS_KEY_TWEETED, updated)
 
 
 def filter_untweeted(entries, tweeted):
@@ -61,8 +60,12 @@ def convert_utc_struct_time_to_localtime(utc_struct_time):
 
 def main():
     """メイン"""
-    # ツイート済みエントリーの日時を取得
-    tweeted = load_tweeted()
+    # Redisへ接続
+    db = redis.from_url(
+        REDIS_URL,
+        charset='utf-8',
+        decode_responses=True
+    )
 
     # RSSフィードの取得
     d = feedparser.parse(FEED_URL)
@@ -70,6 +73,14 @@ def main():
         print('エラー: ステータスコードが400以上')
         print(d.status)
         sys.exit(1)
+
+    # ツイート済みエントリーの日時を取得
+    tweeted = load_tweeted(db)
+    if tweeted is None:
+        if len(d.entries) > UNTWEETED_MAX_NUM:
+            tweeted = d.entries[UNTWEETED_MAX_NUM].updated
+        else:
+            tweeted = ''
 
     # Twitterで認証する
     try:
@@ -108,7 +119,7 @@ def main():
             sys.exit(1)
 
     # ツイート済みエントリーの日時を保存
-    save_tweeted(d.entries[0].updated)
+    save_tweeted(db, d.entries[0].updated)
 
 
 if __name__ == '__main__':

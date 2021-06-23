@@ -9,3 +9,17 @@ services:
             - .env
         volumes:
             - ..:/usr/src/app:cached
+        networks:
+            - feed2tweet-network
+
+    redis:
+        container_name: feed2tweet-redis
+        image: redis:6
+        volumes:
+            - ./redis:/data
+        networks:
+            - feed2tweet-network
+
+networks:
+    feed2tweet-network:
+        name: feed2tweet-network
