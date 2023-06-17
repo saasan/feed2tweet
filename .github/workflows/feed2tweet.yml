@@ -1,0 +1,49 @@
+name: feed2tweet
+
+on:
+  # schedule:
+  #   - cron: '3-59/10 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  STATE_FILE: './tweeted'
+
+jobs:
+  exec:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: actions/cache用keyの生成
+        run: echo "TWEETED_KEY=$(date +%s)" >> "$GITHUB_ENV"
+
+      - uses: actions/cache@v3
+        id: tweeted
+        with:
+          path: ${{ env.STATE_FILE }}
+          key: tweeted-${{ env.TWEETED_KEY }} # 毎回、最新のキャッシュを保存するためにIDを指定する
+          restore-keys: tweeted- # 復元時は最新のキャッシュを指定する
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # pip install feedparser pydantic tweepy
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Exce App
+        env:
+          FEED_URL: ${{ vars.FEED_URL }}
+          CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
+          CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+        run: python main.py

@@ -1,3 +1,14 @@
-feedparser
-redis
-tweepy
+certifi==2023.5.7
+charset-normalizer==3.1.0
+feedparser==6.0.10
+idna==3.4
+oauthlib==3.2.2
+pydantic==1.10.9
+python-dateutil==2.8.2
+requests==2.31.0
+requests-oauthlib==1.3.1
+sgmllib3k==1.0.0
+six==1.16.0
+tweepy==4.14.0
+typing_extensions==4.6.3
+urllib3==2.0.3
