@@ -1,8 +1,8 @@
 name: feed2tweet
 
 on:
-  # schedule:
-  #   - cron: '3-59/10 * * * *'
+  schedule:
+    - cron: '3-59/10 * * * *'
   workflow_dispatch:
 
 permissions:
