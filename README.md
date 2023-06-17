@@ -27,7 +27,7 @@ API 有料化後も自分のアカウントだけなら無料でツイートで�
     # Twitter Access Token Secret
     ACCESS_TOKEN_SECRET='*****'
 
-# GitHub Actions での設定
+## GitHub Actions での設定
 
 リポジトリの Settings > Secrets and variables > Actions
 で FEED_URL は Variables、それ以外は Secrets として設定する。
@@ -36,7 +36,7 @@ API 有料化後も自分のアカウントだけなら無料でツイートで�
 
 .github/workflows/feed2tweet.yml で10分に1回実行する設定としている。
 
-# GitHub Actions でのキャッシュ
+## GitHub Actions でのキャッシュ
 
 actions/setup-python@v4 で構築した環境と、
 最後に実行した UNIX 時間を保持する tweeted
