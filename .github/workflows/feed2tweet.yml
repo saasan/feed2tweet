@@ -5,9 +5,6 @@ on:
     - cron: '3-59/10 * * * *'
   workflow_dispatch:
 
-permissions:
-  contents: read
-
 env:
   STATE_FILE: './tweeted'
   CACHE_KEY: 'tweeted-'
