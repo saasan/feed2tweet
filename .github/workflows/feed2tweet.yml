@@ -45,8 +45,8 @@ jobs:
           ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
           MISSKEY_ADDRESS: ${{ vars.MISSKEY_ADDRESS }}
           MISSKEY_TOKEN: ${{ secrets.MISSKEY_TOKEN }}
-          UNTWEETED_MAX_NUM: ${{ vars.UNTWEETED_MAX_NUM }}
-          TWEET_INTERVAL: ${{ vars.TWEET_INTERVAL }}
+          UNTWEETED_MAX_NUM: ${{ vars.UNTWEETED_MAX_NUM || '3' }}
+          TWEET_INTERVAL: ${{ vars.TWEET_INTERVAL || '5' }}
         run: python main.py
 
       - name: Cleanup cache
