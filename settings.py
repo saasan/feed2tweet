@@ -14,6 +14,10 @@ class Settings(BaseSettings):
     access_token: str
     # Twitter Access Token Secret
     access_token_secret: str
+    # Misskeyのインスタンスアドレス
+    misskey_address: str | None
+    # MisskeyのAPIトークン
+    misskey_token: str | None
 
     # ツイート済み日時を書き込むファイル名
     tweeted_file: str = 'tweeted'

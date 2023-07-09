@@ -26,11 +26,25 @@ API 有料化後も自分のアカウントだけなら無料でツイートで�
     ACCESS_TOKEN='*****'
     # Twitter Access Token Secret
     ACCESS_TOKEN_SECRET='*****'
+    # Misskeyのインスタンスアドレス (Misskeyへ投稿しない場合は不要)
+    MISSKEY_ADDRESS=example.com
+    # MisskeyのAPIトークン (Misskeyへ投稿しない場合は不要)
+    MISSKEY_TOKEN='*****'
 
 ## GitHub Actions での設定
 
 リポジトリの Settings > Secrets and variables > Actions
-で FEED_URL は Variables、それ以外は Secrets として設定する。
+で Variables と Secrets を設定する。
+
+- Variables
+  - FEED_URL
+  - MISSKEY_ADDRESS
+- Secrets
+  - CONSUMER_KEY
+  - CONSUMER_SECRET
+  - ACCESS_TOKEN
+  - ACCESS_TOKEN_SECRET
+  - MISSKEY_TOKEN
 
 ## GitHub Actions での実行
 
