@@ -30,6 +30,10 @@ API 有料化後も自分のアカウントだけなら無料でツイートで�
     MISSKEY_ADDRESS=example.com
     # MisskeyのAPIトークン (Misskeyへ投稿しない場合は不要)
     MISSKEY_TOKEN='*****'
+    # ツイート済み日時が保存されていない場合にツイートする最大数 (任意)
+    UNTWEETED_MAX_NUM=3
+    # 連続でツイートを送信する場合の間隔(秒) (任意)
+    TWEET_INTERVAL=5
 
 ## GitHub Actions での設定
 

@@ -19,12 +19,13 @@ class Settings(BaseSettings):
     # MisskeyのAPIトークン
     misskey_token: str | None
 
-    # ツイート済み日時を書き込むファイル名
-    tweeted_file: str = 'tweeted'
     # ツイート済み日時が保存されていない場合にツイートする最大数
     untweeted_max_num: int = 3
     # 連続でツイートを送信する場合の間隔(秒)
     tweet_interval: int = 5
+
+    # ツイート済み日時を書き込むファイル名
+    tweeted_file: str = 'tweeted'
     # URLを除いたツイートの最大文字数
     max_tweet_char: int = 128
     # ログ出力の設定ファイル
