@@ -1,7 +1,9 @@
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file='.env', env_file_encoding='utf-8')
+
     # RSSフィードのURL
     feed_url: str
     # Twitter Consumer Key
@@ -23,11 +25,6 @@ class Settings(BaseSettings):
     max_tweet_char: int = 128
     # ログ出力の設定ファイル
     logging_config_file: str = 'logging_config.json'
-
-
-    class Config:
-        env_file = '.env'
-        env_file_encoding = 'utf-8'
 
 
 settings = Settings()
