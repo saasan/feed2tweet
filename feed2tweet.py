@@ -63,9 +63,12 @@ class Feed2Tweet:
             tweet = entry.title[:settings.max_tweet_char] + ' ' + entry.link
             self.twitter_client.create_tweet(text=tweet)
         except tweepy.TweepyException as e:
-            self.logger.critical('エラー: Twitterへの投稿に失敗')
-            self.logger.critical(e)
-            sys.exit(1)
+            if len(e.api_messages) > 0 and e.api_messages[0] == 'You are not allowed to create a Tweet with duplicate content.':
+                self.logger.info('ツイート内容重複のためスキップ')
+            else:
+                self.logger.critical('エラー: Twitterへの投稿に失敗')
+                self.logger.critical(e)
+                sys.exit(1)
 
 
     def post_to_misskey(self, entry: feedparser.FeedParserDict) -> None:
