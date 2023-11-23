@@ -1,16 +1,26 @@
 # feed2tweet
 
-RSSフィードをツイートする
+RSSフィードを X (旧 Twitter) / Misskey へ投稿する
 
 ## 事前準備
 
-API 有料化後も自分のアカウントだけなら無料でツイートできるので、
-ツイートしたいアカウントで以下を行う。
+### X (旧 Twitter)
 
-1. Twitter のツイートしたいアカウントで開発者として登録
+API 有料化後も自分のアカウントだけなら無料でポスト(ツイート)できるので、
+ポストしたいアカウントで以下を行う。
+
+1. X のポストしたいアカウントで開発者として登録
 2. Developer Portal でプロジェクトとアプリを設定
 3. アプリの User authentication settings を編集し App permissions を Read and write へ変更
 4. API の Consumer Keys, Access Token and Secret を取得
+
+### Misskey
+
+ノートを作成したいアカウントで以下を行う。
+
+1. 設定 > API アクセストークンの発行
+2. 名前を入力し、権限「ノートを作成・削除する」をつけて発行
+3. 確認コード (API トークン) を取得
 
 ## ローカルで実行する場合の設定
 
@@ -43,6 +53,8 @@ API 有料化後も自分のアカウントだけなら無料でツイートで�
 - Variables
   - FEED_URL
   - MISSKEY_ADDRESS
+  - UNTWEETED_MAX_NUM
+  - TWEET_INTERVAL
 - Secrets
   - CONSUMER_KEY
   - CONSUMER_SECRET
