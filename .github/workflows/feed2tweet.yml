@@ -51,17 +51,10 @@ jobs:
 
       - name: Cleanup cache
         run: |
-          gh extension install actions/gh-actions-cache
-
-          # キャッシュがない場合にエラーとなって停止するのを防ぐ
-          set +e
-
-          # 作成から1日以上経っているキャッシュを削除
-          for KEY in $(gh actions-cache list -R "${REPO}" -B "${BRANCH}" --key ${{ env.CACHE_KEY }} --order asc --sort created-at | grep -P 'days? ago' | cut -f 1)
-          do
-              echo "Deleting ${KEY}"
-              gh actions-cache delete "${KEY}" -R "${REPO}" -B "${BRANCH}" --confirm
-          done
+          # 新しいものから5個を残してキャッシュ削除
+          gh cache list --key tweeted- --order asc --sort created_at --json id | \
+            jq -r '.[0:-5][].id' | \
+            xargs -r -I ID gh cache delete ID
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
