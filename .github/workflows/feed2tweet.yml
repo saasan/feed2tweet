@@ -55,3 +55,5 @@ jobs:
           gh cache list --key ${{ env.CACHE_KEY }} --order asc --sort created_at --json id | \
             jq -r '.[0:-5][].id' | \
             xargs -r -I ID gh cache delete ID
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
